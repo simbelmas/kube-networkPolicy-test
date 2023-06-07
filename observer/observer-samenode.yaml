@@ -6,19 +6,6 @@ metadata:
     app.kubernetes.io/part-of: netpol-observer
     app.kubernetes.io/name: observer-samenode
 spec:
-  affinity:
-    podAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app.kubernetes.io/part-of
-            operator: In
-            values:
-            - netpol-a
-          - key: app.kubernetes.io/instance
-            operator: In
-            values:
-            - httpdtest
   replicas: 1
   selector:
     matchLabels: *observer_labels
@@ -26,6 +13,20 @@ spec:
     metadata:
       labels: *observer_labels
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values:
+                - netpol-a
+              - key: app.kubernetes.io/instance
+                operator: In
+                values:
+                - httpdtest
+            topologyKey: kubernetes.io/hostname
       securityContext:
         runAsNonRoot: true
         seccompProfile:
