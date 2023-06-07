@@ -42,7 +42,7 @@ done< <(oc get pod -A -l app.kubernetes.io/part-of=netpol-observer | awk '$2 ~ /
         color=${red}
       fi
       echo -e "${color}   external node:none  conn:${conn_status} url:${svc_url}${NOCOLOR}"
-      sleep 5
+      sleep 1
     done
 )&
 
