@@ -17,7 +17,15 @@ done< <(oc get pod -A -l app.kubernetes.io/part-of=netpol-observer | awk '$2 ~ /
     green='\033[0;32m'
     red='\033[0;31m'
     NOCOLOR='\033[0m'
+    #Azure
     service_external_ip=$(oc -n netpol-a get svc httpdtest -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    if [ "${service_external_ip}" == "" ] ; then
+      #AWS
+      service_external_ip=$(oc -n netpol-a get svc httpdtest -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    fi
+    if [ "${service_external_ip}" == "" ] ; then 
+      exit 1
+    fi
     svc_url=${service_external_ip}:443
     test_should_work="yes"
     while true ; do
