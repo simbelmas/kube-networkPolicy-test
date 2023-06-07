@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: netpol-c
+
+resources:
+- ../observer/
+
+patches:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: observer-othernode
+  path: observer-status.yaml
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: observer-samenode
+  path: observer-status.yaml

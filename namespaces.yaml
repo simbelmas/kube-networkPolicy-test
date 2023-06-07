@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: netpol-a
+  labels:
+    app.kubernetes.io/part-of: netpol-a
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: netpol-b
+  labels:
+    app.kubernetes.io/part-of: netpol-b
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: netpol-c
+  labels:
+    app.kubernetes.io/part-of: netpol-c
+

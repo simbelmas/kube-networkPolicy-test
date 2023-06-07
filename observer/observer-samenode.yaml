@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: observer-samenode
+  labels: &observer_labels
+    app.kubernetes.io/part-of: netpol-observer
+    app.kubernetes.io/name: observer-samenode
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/part-of
+            operator: In
+            values:
+            - netpol-a
+          - key: app.kubernetes.io/instance
+            operator: In
+            values:
+            - httpdtest
+  replicas: 1
+  selector:
+    matchLabels: *observer_labels
+  template:
+    metadata:
+      labels: *observer_labels
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: observer
+        image: quay.io/simbelmas/alpine-tools:stable
+
+        command:
+        - /bin/sh
+        - -c
+        - |
+          export node_affiliation="same "
+          source /mnt/run-observer.sh
+        volumeMounts:
+        - name: run-observer
+          mountPath: /mnt
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ['ALL']
+      volumes:
+      - name: run-observer
+        configMap:
+          name: observer-script

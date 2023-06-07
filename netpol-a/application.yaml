@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpdtest
+  labels: &httpdtest_labels
+    app.kubernetes.io/part-of: netpol-a
+    app.kubernetes.io/instance: httpdtest
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *httpdtest_labels
+  template:
+    metadata:
+      labels: *httpdtest_labels
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: httpdtest
+        image: quay.io/simbelmas/nginx-alpine:stable
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ['ALL']
