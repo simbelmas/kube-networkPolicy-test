@@ -13,21 +13,22 @@ spec:
     metadata:
       labels: *httpdtest_labels
     spec:
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-              - key: app.kubernetes.io/part-of
-                operator: In
-                values:
-                - netpol-a
-              - key: app.kubernetes.io/instance
-                operator: In
-                values:
-                - httpdtest
-            topologyKey: kubernetes.io/hostname
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/part-of
+                  operator: In
+                  values:
+                  - netpol-a
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                  - httpdtest
+              topologyKey: kubernetes.io/hostname
       securityContext:
         runAsNonRoot: true
         seccompProfile:
