@@ -5,7 +5,7 @@ NOCOLOR='\033[0m'
 
 while true; do
   namespace=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-  svc_url=http://httpdtest.netpol-a.svc.cluster.local
+  svc_url=http://httpdtest.netpol-a.svc.cluster.local:443
   timeout -k 2 2 curl -o /dev/null ${svc_url} -- 1>/dev/null 2>/dev/null
   command_rc=$?
   

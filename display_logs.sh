@@ -18,7 +18,7 @@ done< <(oc get pod -A -l app.kubernetes.io/part-of=netpol-observer | awk '$2 ~ /
     red='\033[0;31m'
     NOCOLOR='\033[0m'
     service_external_ip=$(oc -n netpol-a get svc httpdtest -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-    svc_url=${service_external_ip}
+    svc_url=${service_external_ip}:443
     test_should_work="yes"
     while true ; do
       timeout -k 2 2 curl -o /dev/null ${svc_url} -- 1>/dev/null 2>/dev/null
